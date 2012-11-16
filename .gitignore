@@ -1,0 +1,7 @@
+#Excluyo las carpetas propias de eclipse
+.metadata/
+algoritmos\ Geneticos/.settings
+
+#Excluyo lo contenido dentro de bin
+algoritmos\ Geneticos/bin/
+
