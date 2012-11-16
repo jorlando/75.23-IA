@@ -4,6 +4,20 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class AlgoritmoGenetico {
+	private static ArrayList<Individuo> mejoresPorNivel= new ArrayList<Individuo>();
+	
+	public static void mostrarAvance()
+	{
+		System.out.println("______________ RESUMEN DE AVANCE DE PORCENTAJE ______________");
+		
+		for(int i=0; i<mejoresPorNivel.size(); i++)
+		{
+		System.out.print("Nivel:");
+		System.out.println(i+1);
+		System.out.println(mejoresPorNivel.get(i).getPorcentaje());
+		}
+
+	}
 
 	public static void main(String[] args) throws IOException {
 	
@@ -30,18 +44,17 @@ public class AlgoritmoGenetico {
 		
 		int pctCargaUsuario= pctApt;
 		Population pobla = new Population();
-		System.out.println("###########################################Populacion###########################################");
+		System.out.println("##########################Populacion##########################");
 		pobla.generarPoblacion(tamanio);
 		pobla.obtenerResultadoFormula();
 		pobla.imprimirPoblacion();
 		pobla.ordenoPoblacion();
-		
-		System.out.println("###########################################Seleccion###########################################");
+		System.out.println("##########################Seleccion##########################");
 		pobla.seleccion(pctSlc);
 		
 		pobla.imprimirPoblacion();
-		System.out.println("###########################################Reproduccion###########################################");
-		ArrayList<Individuo> salidaReproduccion1 = pobla.repoduccion(pctReprod);
+		System.out.println("##########################Reproduccion##########################");
+		ArrayList<Individuo> salidaReproduccion1 = pobla.reproduccion(pctReprod);
 		ArrayList<Individuo> salidaMutacion1 = pobla.mutacion(pctMutac);
 		pobla.agregarPoblacion(salidaReproduccion1);
 		pobla.obtenerResultadoFormula();
@@ -49,11 +62,12 @@ public class AlgoritmoGenetico {
 		pobla.imprimirPoblacion();
 		pobla.agregarPoblacion(salidaMutacion1);
 		pobla.obtenerResultadoFormula();
-		System.out.println("###########################################Mutacion###########################################");
+		System.out.println("##########################Mutacion##########################");
 		pobla.imprimirPoblacion();
+		mejoresPorNivel.add(pobla.obtenerElMejor());
 		
 		int x =1;
-		while (x<pobla.maximoDeVueltas() && pctCargaUsuario>=pobla.porcentajeMasAlto())
+		while ((x<pobla.maximoDeVueltas()) && (pctCargaUsuario>pobla.porcentajeMasAlto()))
 		{
 			pobla.ordenoPoblacion();
 			System.out.println("############################################");
@@ -64,23 +78,25 @@ public class AlgoritmoGenetico {
 			System.out.println(" %");
 			System.out.println("############################################");
 			
-			System.out.println("###########################################Seleccion###########################################");
+			System.out.println("##########################Seleccion##########################");
 			pobla.seleccion(pctSlc);
 			
 			pobla.imprimirPoblacion();
-			ArrayList<Individuo> salidaReproduccion = pobla.repoduccion(pctReprod);
+			ArrayList<Individuo> salidaReproduccion = pobla.reproduccion(pctReprod);
 			ArrayList<Individuo> salidaMutacion = pobla.mutacion(pctMutac);
 			pobla.agregarPoblacion(salidaReproduccion);
 			pobla.obtenerResultadoFormula();
-			System.out.println("###########################################Reproduccion###########################################");
+			System.out.println("##########################Reproduccion##########################");
 			pobla.imprimirPoblacion();
 			pobla.agregarPoblacion(salidaMutacion);
 			pobla.obtenerResultadoFormula();
-			System.out.println("###########################################Mutacion###########################################");
+			System.out.println("##########################Mutacion##########################");
 			pobla.imprimirPoblacion();
 			x++;
+			mejoresPorNivel.add(pobla.obtenerElMejor());
 		}
 		pobla.mostrarElMejor();
+		mostrarAvance();
 		
 		
 		

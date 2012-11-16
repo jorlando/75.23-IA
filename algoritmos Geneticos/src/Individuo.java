@@ -1,6 +1,6 @@
 
-public class Individuo {
-	private static double valorParaOperar, porcentajeAptitud;
+public class Individuo implements Comparable<Individuo>{
+	private double valorParaOperar, porcentajeAptitud;
 	
 	public Individuo(double valor)
 	{
@@ -39,7 +39,7 @@ public class Individuo {
 		this.setValor(valor);
 	}
 	
-	public int compare(Individuo indiAComparar)
+	public int compareTo(Individuo indiAComparar)
 	{
 		int res=0;
 		if(this.getPorcentaje()>indiAComparar.getPorcentaje()) res=-1;
@@ -49,5 +49,7 @@ public class Individuo {
 		if(this.getPorcentaje()==indiAComparar.getPorcentaje()) res=0;
 		return res;
 	}
+	
+
 
 }

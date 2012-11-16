@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 
 public class Population {
@@ -28,16 +27,11 @@ public class Population {
 		{
 			this.agregarIndividuo();
 		}
-		//System.out.println("#######################");
-		//System.out.println(poblacion.size());
-		//for(int i=0; i<poblacion.size(); i++)
-			//System.out.println(poblacion.get(i).getValor());
-		//System.out.println("#######################");
 	}
 	
 	public void agregarIndividuo()
 	{
-		double valorRam = (double) Math.round((Math.random()*maxRandom)*100)/100.0d;
+		double valorRam = Math.round((Math.random()*maxRandom)*100)/100.0d;
 		Individuo individuoAgrego = new Individuo(valorRam);
 		this.poblacion.add(individuoAgrego);
 	}
@@ -47,16 +41,16 @@ public class Population {
 
 		Iterator<Individuo> iterador = poblacion.listIterator();
 		while( iterador.hasNext() ) {
-			Individuo individuoAUsar = (Individuo) iterador.next();
+			Individuo individuoAUsar = iterador.next();
 			aplicoFormula(individuoAUsar);
 		} 
 	}
 		
 	public void aplicoFormula(Individuo individuo) {
-		double aux=(double) individuo.getValor();
+		double aux=individuo.getValor();
 		//X3+4X2+2X-4
-		double pot3=(double) Math.pow(aux,3);
-		double pot2=(double) Math.pow(aux,2);
+		double pot3=Math.pow(aux,3);
+		double pot2=Math.pow(aux,2);
 		double resultado=pot3+(4*pot2)+(2*aux)-4;
 		double aptitud = calculoAptitud(resultado);
 		individuo.setPorcentaje(aptitud);
@@ -64,22 +58,19 @@ public class Population {
 
 	public double calculoAptitud(double resultado) {
 		//calculo el porcentaje de semejanza al menor valor
-		double aptitud = (double)(resultado*100)/maximoValorFormula;
-		return Math.round( ((double)100-aptitud) *100)/100.0d;
+		double aptitud = resultado*100/maximoValorFormula;
+		return Math.round( (100-aptitud) *100)/100.0d;
 		}
 
 	public void ordenoPoblacion()
 	{
-		Collections.sort(poblacion,new Comparator<Individuo>(){
-            public int compare(Individuo indi1, Individuo indi2) {
-                return indi1.compare(indi1);
-            }});
+		Collections.sort(poblacion);
 	}
 	
 	public void seleccion(int porcentaje)
 	{
 		int numero= tamanioPoblacion;
-		int cantidadAObtener = (int) (numero*porcentaje/100);
+		int cantidadAObtener = numero*porcentaje/100;
 		//Si no es par, aumento una unidad para que cuando haga la reproduccion tenga parejas
 		if((cantidadAObtener%2)!=0){cantidadAObtener++;}
 		
@@ -94,10 +85,10 @@ public class Population {
 		poblacion.addAll(poblacionASeleccionar);
 	}
 	
-	public ArrayList<Individuo> repoduccion(int porcentaje)
+	public ArrayList<Individuo> reproduccion(int porcentaje)
 	{
 		int numero= tamanioPoblacion;
-		int cantidadAObtener = (int) (numero*porcentaje/100);
+		int cantidadAObtener = (numero*porcentaje)/100;
 				
 		System.out.println("Cantidad de Reproduccion");
 		System.out.println(cantidadAObtener);
@@ -117,7 +108,7 @@ public class Population {
 	public ArrayList<Individuo> mutacion(int porcentaje)
 	{
 		int numero= tamanioPoblacion;
-		int cantidadAObtener = (int) (numero*porcentaje/100);
+		int cantidadAObtener = numero*porcentaje/100;
 				
 		System.out.println("Cantidad de mutacion");
 		System.out.println(cantidadAObtener);
@@ -134,7 +125,7 @@ public class Population {
 	
 	public Individuo crearIndividuoPorReproduccion(Individuo uno, Individuo dos)
 	{
-		double valorPromedio =  Math.round(((double)(uno.getValor()+dos.getValor())/2)*100)/100.0d;
+		double valorPromedio =  Math.round(((uno.getValor()+dos.getValor())/2)*100)/100.0d;
 		Individuo unoNuevo = new Individuo(valorPromedio);
 		return unoNuevo;
 	}
@@ -150,21 +141,31 @@ public class Population {
 		System.out.println("######################################################");
 	}
 	
+	public Individuo obtenerElMejor()
+	{
+		return poblacion.get(0);
+	}
+	
 	public void agregarPoblacion(ArrayList<Individuo> indiAgregar)
 	{
-		this.poblacion.addAll(indiAgregar);
+		Iterator<Individuo> iterador = indiAgregar.listIterator();
+		while( iterador.hasNext() ) {
+			Individuo individuoAAgregar = iterador.next();
+			poblacion.add(individuoAAgregar);
+		} 
 	}
 	
 	public int porcentajeMasAlto()
 	{
-		return (int) this.poblacion.get(0).getPorcentaje();
+		int masAlto= (int) poblacion.get(0).getPorcentaje();
+		return masAlto;
 	}
 	
 	public void imprimirPoblacion()
 	{
 		Iterator<Individuo> iterador = poblacion.listIterator();
 		while( iterador.hasNext() ) {
-			Individuo individuoAUsar = (Individuo) iterador.next();
+			Individuo individuoAUsar = iterador.next();
 			System.out.println("------------------");
 			System.out.print("Valor de Evaluacion: ");
 	         System.out.print(individuoAUsar.getValor());
